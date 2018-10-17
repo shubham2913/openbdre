@@ -1,10 +1,14 @@
 package com.wipro.ats.bdre.ml.sources;
 
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Row;
 import org.apache.spark.sql.hive.HiveContext;
 import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.SQLContext;
+
+import java.util.List;
 
 /**
  * Created by cloudera on 11/19/17.
@@ -12,7 +16,7 @@ import org.apache.spark.sql.SQLContext;
 public class HiveSource {
     public DataFrame getDataFrame(JavaSparkContext jsc, String metastoreURI, String dbName, String tableName, StructType schema){
 int i;
-        HiveContext hiveContext = new org.apache.spark.sql.hive.HiveContext(jsc);
+        HiveContext hiveContext = (HiveContext) new org.apache.spark.sql.hive.HiveContext(jsc);
         //hiveContext.setConf("hive.metastore.uris", metastoreURI);
         System.out.println("dbName = " + dbName);
         System.out.println("tableName = " + tableName);
@@ -23,6 +27,7 @@ int i;
             System.out.println("ciej");
         System.out.println(tableNames[i]);}
         DataFrame df = hiveContext.table(dbName+"."+tableName);
+
         return df;
     }
 }

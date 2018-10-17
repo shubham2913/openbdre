@@ -153,28 +153,5 @@ public class MLMain {
 
     }
     // this method checks if hive table exists for the parent process id and deletes it if present
-    public static void checkTable(int parentProcessId) {
-        String driverName = "org.apache.hive.jdbc.HiveDriver";
-        Connection connection;
-        String srcEnv="localhost:10000";
-        String srcDB="default";
-        try {
-            Class.forName(driverName);
-            connection = DriverManager.getConnection("jdbc:hive2://" + srcEnv + "/" + srcDB.toLowerCase(), "", "");
-            ResultSet rs=connection.createStatement().executeQuery("DROP TABLE IF EXISTS ML_" + parentProcessId);
-
-    /*        List<String> tables = new ArrayList<String>();
-            while (rs.next()) {
-                String tableName = rs.getString(1);
-                tables.add(tableName.toUpperCase());
-            }
-            if(tables.contains("ML_" + parentProcessId)){
-
-            }*/
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        }
 
 }

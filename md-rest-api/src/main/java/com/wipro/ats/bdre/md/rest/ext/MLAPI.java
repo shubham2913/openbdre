@@ -32,6 +32,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+//import com.wipro.ats.bdre.ml.driver.*;
 
 /**
  * Created by su324335 on 11/17/17.
@@ -72,7 +73,14 @@ public class MLAPI {
         LOGGER.info(sourceEnv + "srcEnv");
         try {
             Class.forName(driverName);
-            connection = DriverManager.getConnection("jdbc:hive2://" + sourceEnv + "/default", "", "");
+            String[] connectionProperties=sourceEnv.split(":");
+            if(connectionProperties[2].equals("None"))
+                connectionProperties[2]="";
+            if(connectionProperties[3].equals("None"))
+                connectionProperties[3]="";
+            System.out.println(connectionProperties[2]);
+            System.out.println(connectionProperties[3]);
+            connection = DriverManager.getConnection("jdbc:hive2://" + connectionProperties[0]+":"+connectionProperties[1] + "/default", connectionProperties[2], connectionProperties[3]);
             ResultSet rs = connection.createStatement().executeQuery("SHOW DATABASES");
 
             List<String> databases = new ArrayList<String>();
@@ -102,7 +110,14 @@ public class MLAPI {
         LOGGER.info(srcDB + "srcDB");
         try {
             Class.forName(driverName);
-            connection = DriverManager.getConnection("jdbc:hive2://" + srcEnv + "/" + srcDB.toLowerCase(), "", "");
+            String[] connectionProperties=srcEnv.split(":");
+            if(connectionProperties[2].equals("None"))
+                connectionProperties[2]="";
+            if(connectionProperties[3].equals("None"))
+                connectionProperties[3]="";
+            System.out.println(connectionProperties[2]);
+            System.out.println(connectionProperties[3]);
+            connection = DriverManager.getConnection("jdbc:hive2://" + connectionProperties[0]+":"+connectionProperties[1] + "/" + srcDB.toLowerCase(), connectionProperties[2], connectionProperties[3]);
             ResultSet rs = connection.createStatement().executeQuery("SHOW TABLES");
 
             List<String> tables = new ArrayList<String>();
@@ -132,6 +147,7 @@ public class MLAPI {
         LOGGER.info(srcDB + "srcDB");
         try {
             Class.forName(driverName);
+            String[] connectionProperties=srcEnv.split(":");
             connection = DriverManager.getConnection("jdbc:hive2://" + srcEnv + "/" + srcDB.toLowerCase(), "", "");
             String tableName="ML_"+pid;
             ResultSet rs = connection.createStatement().executeQuery("select * from " + srcDB + "." + tableName);
@@ -149,6 +165,11 @@ public class MLAPI {
                 }
                 tables.add(m);
             }
+/*            System.out.println("executing ml-results.sh");
+            ProcessBuilder processBuilder=new ProcessBuilder("/home/cloudera/bdre/bdre-scripts/execution/ml-results.sh","1","2",pid.toString(),"admin");
+            java.lang.Process process=processBuilder.start();
+            process.waitFor();*/
+            //System.out.println("ml-results.sh executed");
             restWrapper = new RestWrapper(tables, RestWrapperOptions.OK);
 
         } catch (Exception e) {
@@ -169,7 +190,14 @@ public class MLAPI {
         LOGGER.info(tableName + "tableName");
         try {
             Class.forName(driverName);
-            connection = DriverManager.getConnection("jdbc:hive2://" + srcEnv + "/" + srcDB.toLowerCase(), "", "");
+            String[] connectionProperties=srcEnv.split(":");
+            if(connectionProperties[2].equals("None"))
+                connectionProperties[2]="";
+            if(connectionProperties[3].equals("None"))
+                connectionProperties[3]="";
+            System.out.println(connectionProperties[2]);
+            System.out.println(connectionProperties[3]);
+            connection = DriverManager.getConnection("jdbc:hive2://" + connectionProperties[0]+":"+connectionProperties[1] + "/" + srcDB.toLowerCase(), connectionProperties[2], connectionProperties[3]);
             ResultSet rs = connection.createStatement().executeQuery("select * from " + srcDB + "." + tableName +"  limit 1");
             ResultSetMetaData metaData = rs.getMetaData();
             Map<String, String> databases = new HashMap<String, String>();
