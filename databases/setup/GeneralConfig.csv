@@ -781,6 +781,8 @@
 'Hive_Model_Connection','serverIP','HiveServer Port','', 1,'10000','text', 1
 'Hive_Model_Connection','hostName','HiveServer Host Name','', 1,'localhost','text', 1
 'Hive_Model_Connection','metastoreURI','Hive MetaStore URI','', 1,'thrift://localhost:9083','text', 1
+'Hive_Model_Connection','username','Username','', 1,'None','text', 1
+'Hive_Model_Connection','password','Password','', 1,'None','text', 1
 
 
 
