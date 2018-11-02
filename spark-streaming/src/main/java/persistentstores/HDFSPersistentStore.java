@@ -56,16 +56,16 @@ public class HDFSPersistentStore implements PersistentStore {
                         df.show(100);
 
                     }
-                    /*JavaRDD<WrapperMessage> finalRDD = emptyRDD;
+                    JavaRDD<WrapperMessage> finalRDD = emptyRDD;
                     if (df != null) {
                         finalRDD = df.javaRDD().map(record->WrapperMessage.convertToWrapperMessage(record));
-                    }*/
+                    }
                     return wrapperMessageJavaRDD;
                 }
             });
 
             //adding empty output operation to finish flow, else spark would never execute the DAG
-            dStream.foreachRDD(new Function<JavaRDD<WrapperMessage>, Void>() {
+            finalDStream.foreachRDD(new Function<JavaRDD<WrapperMessage>, Void>() {
                 @Override
                 public Void call(JavaRDD<WrapperMessage> rowJavaRDD) throws Exception {
                     System.out.println(" For each testing ");
