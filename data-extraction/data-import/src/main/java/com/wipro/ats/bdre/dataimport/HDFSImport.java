@@ -14,6 +14,7 @@
 
 package com.wipro.ats.bdre.dataimport;
 
+import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.sqoop.SqoopOptions;
 import com.wipro.ats.bdre.IMConfig;
 import com.wipro.ats.bdre.im.etl.api.exception.ETLException;
@@ -90,6 +91,8 @@ public class HDFSImport extends Configured implements Tool {
         instanceExecId = param[2];
 
         Configuration conf = getConf();
+        conf.set("fs.hdfs.impl", DistributedFileSystem.class.getName());
+        conf.set("fs.file.impl", LocalFileSystem.class.getName());
 
         tableName = commonProperties.getProperty("table");
         if (commonProperties.getProperty("incr.mode") != null) {
@@ -131,6 +134,7 @@ public class HDFSImport extends Configured implements Tool {
             //setting the parameters of sqoopOption
            // options.setHadoopHome(hadoopHome);
             options.setHadoopMapRedHome(hadoopHome);
+            options.setConf(conf);
             options.setJarOutputDir(jarOutputDir);
             String outputDir = targetDir + "/" + processId + "/tmp";
             options.setTargetDir(outputDir);
